@@ -1,9 +1,13 @@
 const db = require("../config/db");
 
 async function getAll() {
-    // Busca todos os campos da sua tabela atual
     const [rows] = await db.query("SELECT id, name, price, image FROM products ORDER BY id ASC");
     return rows;
+}
+
+async function getById(id) {
+    const [rows] = await db.query("SELECT * FROM products WHERE id = ?", [id]);
+    return rows[0] || null;
 }
 
 async function create({ name, price, image }) {
@@ -14,4 +18,15 @@ async function create({ name, price, image }) {
     return result.insertId;
 }
 
-module.exports = { getAll, create };
+async function update(id, { name, price, image }) {
+    await db.query(
+        "UPDATE products SET name = ?, price = ?, image = ? WHERE id = ?",
+        [name, price, image, id]
+    );
+}
+
+async function remove(id) {
+    await db.query("DELETE FROM products WHERE id = ?", [id]);
+}
+
+module.exports = { getAll, getById, create, update, remove };
