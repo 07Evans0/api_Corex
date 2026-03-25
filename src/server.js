@@ -1,4 +1,4 @@
-const app = require("./app"); // O "../" sai da pasta 'src' e entra na raiz onde o app.js está agora
+const app = require("./app");
 
 const PORT = process.env.PORT || 3001;
 
